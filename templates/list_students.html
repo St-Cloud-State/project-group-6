@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>All Students</h2>
+<ul class="list-group">
+    {% for student in students %}
+        <li class="list-group-item">
+            <strong>ID:</strong> {{ student[1] }} |
+            <strong>Name:</strong> {{ student[2] }} |
+            <strong>Address:</strong> {{ student[3] }}
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

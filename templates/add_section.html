@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Add Section</h2>
+<form method="POST">
+    <div class="mb-3">
+        <label for="course_id" class="form-label">Select Course</label>
+        <select name="course_id" class="form-select" required>
+            {% for course in courses %}
+                <option value="{{ course[0] }}">{{ course[1] }} {{ course[2] }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="semester" class="form-label">Semester</label>
+        <select name="semester" class="form-select" required>
+            <option value="Fall">Fall</option>
+            <option value="Spring">Spring</option>
+            <option value="Summer">Summer</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Section</button>
+</form>
+{% endblock %}

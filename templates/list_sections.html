@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>All Course Sections</h2>
+<ul class="list-group">
+    {% for section in sections %}
+        <li class="list-group-item">
+            Section ID: {{ section[0] }} |
+            Semester: {{ section[1] }} |
+            Course: {{ section[2] }} {{ section[3] }} - {{ section[4] }}
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

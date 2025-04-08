@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Courses with Rubric: {{ rubric }}</h2>
+<ul class="list-group">
+    {% for course in courses %}
+        <li class="list-group-item">{{ course[1] }} {{ course[2] }} - {{ course[3] }} ({{ course[4] }} credits)</li>
+    {% endfor %}
+</ul>
+{% endblock %}
