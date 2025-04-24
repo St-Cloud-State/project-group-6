@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Select Section to View Registered Students</h2>
+<form method="GET" action="/view-students-in-section">
+    <div class="mb-3">
+        <label for="section_id" class="form-label">Section</label>
+        <select class="form-select" name="section_id" required>
+            {% for section in sections %}
+            <option value="{{ section[0] }}">{{ section[1] }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">View Students</button>
+</form>
+{% endblock %}

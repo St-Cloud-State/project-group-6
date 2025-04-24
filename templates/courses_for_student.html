@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Courses Registered by Student</h2>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Rubric</th>
+            <th>Number</th>
+            <th>Course Name</th>
+            <th>Semester</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for course in courses %}
+        <tr>
+            <td>{{ course[0] }}</td>
+            <td>{{ course[1] }}</td>
+            <td>{{ course[2] }}</td>
+            <td>{{ course[3] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

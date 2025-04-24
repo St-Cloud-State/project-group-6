@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Register Student in a Section</h2>
+<form method="POST">
+    <div class="mb-3">
+        <label for="student_id" class="form-label">Student</label>
+        <select class="form-select" name="student_id" required>
+            {% for student in students %}
+            <option value="{{ student[0] }}">{{ student[1] }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="section_id" class="form-label">Section</label>
+        <select class="form-select" name="section_id" required>
+            {% for section in sections %}
+            <option value="{{ section[0] }}">{{ section[1] }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Register</button>
+</form>
+{% endblock %}

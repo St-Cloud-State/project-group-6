@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Select Student to View Registered Courses</h2>
+<form method="GET" action="/view-courses-for-student">
+    <div class="mb-3">
+        <label for="student_id" class="form-label">Student</label>
+        <select class="form-select" name="student_id" required>
+            {% for student in students %}
+            <option value="{{ student[0] }}">{{ student[1] }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">View Courses</button>
+</form>
+{% endblock %}
