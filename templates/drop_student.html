@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Drop Student from Section</h2>
+<form method="POST">
+    <div class="mb-3">
+        <label for="registration_id" class="form-label">Select Registration</label>
+        <select name="registration_id" class="form-select" required>
+            {% for r in registrations %}
+                <option value="{{ r[0] }}">
+                    {{ r[1] }} - {{ r[2] }} | Section: {{ r[3] }} ({{ r[4] }}) - {{ r[5] }} {{ r[6] }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-danger">Remove</button>
+</form>
+{% endblock %}

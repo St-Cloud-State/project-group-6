@@ -222,6 +222,30 @@ def select_student():
         students = cursor.fetchall()
     return render_template('select_student.html', students=students)
 
+@app.route('/drop-student', methods=['GET', 'POST'])
+def drop_student():
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute('''
+            SELECT registrations.id, students.student_id, students.name, sections.id, sections.semester, courses.rubric, courses.number
+            FROM registrations
+            JOIN students ON registrations.student_id = students.id
+            JOIN sections ON registrations.section_id = sections.id
+            JOIN courses ON sections.course_id = courses.id
+        ''')
+        registrations = cursor.fetchall()
+
+    if request.method == 'POST':
+        registration_id = request.form['registration_id']
+        with sqlite3.connect(DB_PATH) as conn:
+            cursor = conn.cursor()
+            cursor.execute('DELETE FROM registrations WHERE id = ?', (registration_id,))
+            conn.commit()
+        return redirect(url_for('drop_student'))
+
+    return render_template('drop_student.html', registrations=registrations)
+
+
 
 if __name__ == '__main__':
     init_db()
