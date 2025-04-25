@@ -40,6 +40,7 @@ def init_db():
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 student_id INTEGER NOT NULL,
                 section_id INTEGER NOT NULL,
+                grade TEXT,          
                 FOREIGN KEY(student_id) REFERENCES students(id),
                 FOREIGN KEY(section_id) REFERENCES sections(id),
                 UNIQUE(student_id, section_id) -- Prevent duplicate registrations
@@ -245,6 +246,58 @@ def drop_student():
 
     return render_template('drop_student.html', registrations=registrations)
 
+@app.route('/assign-grade', methods=['GET', 'POST'])
+def assign_grade():
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute('''
+            SELECT registrations.id, students.student_id, students.name, sections.id, sections.semester, courses.rubric, courses.number
+            FROM registrations
+            JOIN students ON registrations.student_id = students.id
+            JOIN sections ON registrations.section_id = sections.id
+            JOIN courses ON sections.course_id = courses.id
+        ''')
+        registrations = cursor.fetchall()
+
+    if request.method == 'POST':
+        registration_id = request.form['registration_id']
+        grade = request.form['grade']
+        with sqlite3.connect(DB_PATH) as conn:
+            cursor = conn.cursor()
+            cursor.execute('UPDATE registrations SET grade = ? WHERE id = ?', (grade, registration_id))
+            conn.commit()
+        return redirect(url_for('assign_grade'))
+
+    return render_template('assign_grade.html', registrations=registrations)
+
+@app.route('/transcript', methods=['GET', 'POST'])
+def transcript():
+    student_info = None
+    transcript_data = []
+
+    if request.method == 'POST':
+        student_id_input = request.form['student_id']
+        with sqlite3.connect(DB_PATH) as conn:
+            cursor = conn.cursor()
+
+            # Get student info
+            cursor.execute('SELECT id, name FROM students WHERE student_id = ?', (student_id_input,))
+            student_info = cursor.fetchone()
+
+            if student_info:
+                student_db_id = student_info[0]
+
+                # Get courses + grades
+                cursor.execute('''
+                    SELECT courses.rubric, courses.number, courses.name, sections.semester, registrations.grade
+                    FROM registrations
+                    JOIN sections ON registrations.section_id = sections.id
+                    JOIN courses ON sections.course_id = courses.id
+                    WHERE registrations.student_id = ?
+                ''', (student_db_id,))
+                transcript_data = cursor.fetchall()
+
+    return render_template('transcript.html', student=student_info, transcript=transcript_data)
 
 
 if __name__ == '__main__':

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>View Student Transcript</h2>
+<form method="POST" class="mb-4">
+    <label for="student_id" class="form-label">Enter Student ID</label>
+    <input type="text" name="student_id" class="form-control" required placeholder="e.g. 12345678">
+    <button type="submit" class="btn btn-primary mt-2">View Transcript</button>
+</form>
+
+{% if student %}
+    <h4>Transcript for: {{ student[1] }} (ID: {{ request.form.student_id }})</h4>
+
+    {% if transcript %}
+        <ul class="list-group mt-3">
+            {% for course in transcript %}
+                <li class="list-group-item">
+                    {{ course[0] }} {{ course[1] }} - {{ course[2] }}<br>
+                    Semester: {{ course[3] }} | Grade: 
+                    {% if course[4] %}
+                        <strong>{{ course[4] }}</strong>
+                    {% else %}
+                        <em>Not Assigned</em>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-muted">No courses found for this student.</p>
+    {% endif %}
+{% endif %}
+{% endblock %}
